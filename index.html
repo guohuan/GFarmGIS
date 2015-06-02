@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html" charset="utf-8" />
+		<title>This is a GFarmGIS sample!</title>
+		<!-- 加载OpenLayers类库 -->
+		<script type="text/javascript" src="js/OpenLayers.js"></script>
+		<style>
+			html,
+			body,
+			#mapDiv {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+		<script type="text/javascript">
+			function initMap() {
+				//创建地图
+				var map = new OpenLayers.Map("mapDiv");
+				//创建OpenStreeMap
+				//将osm图层添加到map中
+				var osm = new OpenLayers.Layer.OSM();
+				map.addLayer(osm);
+				var centerPt = new OpenLayers.LonLat(121.4833, 31.1833);
+//				map.setCenter(centerPt,13);
+				map.zoomTo(1);
+				//添加图层显隐控件
+				map.addControl(new OpenLayers.Control.LayerSwitcher({
+					'ascending': false
+				}));
+				//添加鹰眼图
+				map.addControl(new OpenLayers.Control.OverviewMap());
+				//添加平移缩放工具条
+				map.addControl(new OpenLayers.Control.PanZoomBar());
+				//添加导航
+				map.addControl(new OpenLayers.Control.Navigation());
+				//添加地图比例尺
+				map.addControl(new OpenLayers.Control.ScaleLine());
+				//添加键盘操作支持
+				map.addControl(new OpenLayers.Control.KeyboardDefaults());
+//				//添加鼠标坐标显示
+//				map.addControl(new OpenLayers.controls.MousePosition({element:$('mouseLocationDiv')}));
+			}
+
+			function addWms() {
+				var longitude = 5;
+				var latitude = 40;
+				var zoom = 5;
+				var map = new OpenLayers.Map("mapDiv");
+				var layer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://labs.metacarta.com/wms/vmap0", {
+					layers: 'basic'
+				});
+				map.addLayer(layer);
+				map.zoomToExtent(new OpenLayers.Bounds(-3.922119, 44.335327, 4.866943, 49.553833));
+				map.addLayer(new OpenLayers.GML("GML", "gml/polygon.xml"));
+			}
+		</script>
+	</head>
+
+	<body onload="initMap()">
+		<div id="mapDiv" style="width: 100%;height: 100%;"></div>
+		<div id="scaleDiv"></div>
+		<div id="mouseLocationDiv"></div>
+	</body>
+
+</html>
