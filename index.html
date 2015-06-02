@@ -15,6 +15,9 @@
 				margin: 0;
 				padding: 0;
 			}
+			#mouseLocationDiv{
+				float: right;
+			}
 		</style>
 		<script type="text/javascript">
 			function initMap() {
@@ -41,29 +44,26 @@
 				map.addControl(new OpenLayers.Control.ScaleLine());
 				//添加键盘操作支持
 				map.addControl(new OpenLayers.Control.KeyboardDefaults());
-//				//添加鼠标坐标显示
-//				map.addControl(new OpenLayers.controls.MousePosition({element:$('mouseLocationDiv')}));
+				//添加鼠标坐标显示
+				map.addControl(new OpenLayers.Control.MousePosition({element: $('mouseLocationDiv')}));
 			}
 
 			function addWms() {
-				var longitude = 5;
-				var latitude = 40;
-				var zoom = 5;
+				var wms_url="http://localhost:3280/geoserver/nurc/wms";
+				var wms_layerName="nurc:Arc_Sample";
+				var wms_version="1.1.1";
+				var wms_format="image/png";
 				var map = new OpenLayers.Map("mapDiv");
-				var layer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://labs.metacarta.com/wms/vmap0", {
-					layers: 'basic'
-				});
+				var layer = new OpenLayers.Layer.WMS("wmsSample",wms_url,{layers:wms_layerName,format:wms_format,sigleTile:true})
 				map.addLayer(layer);
-				map.zoomToExtent(new OpenLayers.Bounds(-3.922119, 44.335327, 4.866943, 49.553833));
-				map.addLayer(new OpenLayers.GML("GML", "gml/polygon.xml"));
 			}
 		</script>
 	</head>
 
-	<body onload="initMap()">
+	<body onload="addWms()">
 		<div id="mapDiv" style="width: 100%;height: 100%;"></div>
 		<div id="scaleDiv"></div>
-		<div id="mouseLocationDiv"></div>
+		<div id="mouseLocationDiv">location</div>
 	</body>
 
 </html>
